@@ -1,9 +1,3 @@
-export interface Todo {
-  id: number
-  title: string
-  completed: boolean
-}
-
 export interface Author {
   username: string
   image: string
@@ -35,12 +29,6 @@ export interface CurrentUser {
 // State
 //==============================================================================
 
-export interface TodoState {
-  todos: Todo[]
-  error: string
-  loading: boolean
-}
-
 export interface ArticlesState {
   articles: Article[]
   articlesCount: number
@@ -54,7 +42,6 @@ export interface AuthState {
 }
 
 export interface RootState {
-  todoState: TodoState
   articlesState: ArticlesState
   authState: AuthState
 }

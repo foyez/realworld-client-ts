@@ -1,8 +1,7 @@
 import { put, all, takeLatest } from 'redux-saga/effects'
 
-import { TodoApi, ArticlesApi, AuthApi, setToken } from 'api'
+import { ArticlesApi, AuthApi, setToken } from 'api'
 
-import { loadTodos, loadTodosSuccess, loadTodosFailure } from 'slices/todo'
 import {
   loadArticlesFailure,
   loadArticlesSuccess,
@@ -21,19 +20,6 @@ function* fetchArticles() {
   } catch (err) {
     console.log(err)
     yield put(loadArticlesFailure(err.message))
-  }
-}
-
-/**
- * GET todos from API
- */
-function* fetchTodos() {
-  try {
-    const res = yield TodoApi.getTodos()
-
-    yield put(loadTodosSuccess(res.data))
-  } catch (error) {
-    yield put(loadTodosFailure(error.message))
   }
 }
 
@@ -57,7 +43,6 @@ function* isUserAuth() {
 export function* rootSaga() {
   yield all([
     takeLatest(loadArticles.type, fetchArticles),
-    takeLatest(loadTodos.type, fetchTodos),
     takeLatest(loadAuth.type, isUserAuth),
   ])
 }
