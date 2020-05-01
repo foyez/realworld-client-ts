@@ -1,6 +1,6 @@
 import { put, all, takeLatest } from 'redux-saga/effects'
 
-import { TodoApi, ArticlesApi } from 'api'
+import { TodoApi, ArticlesApi, AuthApi, setToken } from 'api'
 
 import { loadTodos, loadTodosSuccess, loadTodosFailure } from 'slices/todo'
 import {
@@ -8,6 +8,7 @@ import {
   loadArticlesSuccess,
   loadArticles,
 } from 'slices/articles'
+import { authFailure, loadAuth, authSuccess, logout } from 'slices/auth'
 
 /**
  * GET articles
@@ -36,9 +37,27 @@ function* fetchTodos() {
   }
 }
 
+/**
+ * Check user authentication
+ */
+function* isUserAuth() {
+  try {
+    const token = yield window.localStorage.getItem('jwt')
+    if (!token) return put(logout())
+
+    yield setToken(token)
+    const res = yield AuthApi.current()
+
+    yield put(authSuccess(res.data))
+  } catch (err) {
+    yield put(authFailure(err.message))
+  }
+}
+
 export function* rootSaga() {
   yield all([
     takeLatest(loadArticles.type, fetchArticles),
     takeLatest(loadTodos.type, fetchTodos),
+    takeLatest(loadAuth.type, isUserAuth),
   ])
 }

@@ -23,6 +23,14 @@ export interface Article {
   // [key: string]: string | number | boolean | Author | string[] | Date
 }
 
+export interface CurrentUser {
+  username: string
+  email: string
+  token: string
+  image: string
+  bio?: string
+}
+
 //==============================================================================
 // State
 //==============================================================================
@@ -40,7 +48,13 @@ export interface ArticlesState {
   loading: boolean
 }
 
+export interface AuthState {
+  currentUser: CurrentUser | null
+  error: string
+}
+
 export interface RootState {
   todoState: TodoState
   articlesState: ArticlesState
+  authState: AuthState
 }
