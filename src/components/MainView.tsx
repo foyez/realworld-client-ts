@@ -1,7 +1,20 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 
+import { useDispatch, useSelector } from 'react-redux'
+import { selectArticles } from 'selectors'
+import { loadArticles } from 'slices/articles'
+
+import { ArticleList } from 'components/ArticleList'
+
 export const MainView: React.FC = () => {
+  const { articles } = useSelector(selectArticles)
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(loadArticles())
+  }, [dispatch])
+
   return (
     <div className="col-md-9">
       <div className="feed-toggle">
@@ -13,6 +26,8 @@ export const MainView: React.FC = () => {
           </li>
         </ul>
       </div>
+
+      <ArticleList articles={articles} />
     </div>
   )
 }

@@ -1,8 +1,27 @@
 import { put, all, takeLatest } from 'redux-saga/effects'
 
-import { TodoApi } from 'api'
+import { TodoApi, ArticlesApi } from 'api'
 
 import { loadTodos, loadTodosSuccess, loadTodosFailure } from 'slices/todo'
+import {
+  loadArticlesFailure,
+  loadArticlesSuccess,
+  loadArticles,
+} from 'slices/articles'
+
+/**
+ * GET articles
+ */
+function* fetchArticles() {
+  try {
+    const res = yield ArticlesApi.all()
+
+    yield put(loadArticlesSuccess(res.data.articles))
+  } catch (err) {
+    console.log(err)
+    yield put(loadArticlesFailure(err.message))
+  }
+}
 
 /**
  * GET todos from API
@@ -18,5 +37,8 @@ function* fetchTodos() {
 }
 
 export function* rootSaga() {
-  yield all([takeLatest(loadTodos.type, fetchTodos)])
+  yield all([
+    takeLatest(loadArticles.type, fetchArticles),
+    takeLatest(loadTodos.type, fetchTodos),
+  ])
 }
