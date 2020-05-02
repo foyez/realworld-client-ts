@@ -4,6 +4,13 @@ export interface LoginPayload {
   [key: string]: string
 }
 
+export interface RegisterPayload {
+  username: string
+  email: string
+  password: string
+  [key: string]: string
+}
+
 export interface Author {
   username: string
   image: string

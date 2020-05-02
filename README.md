@@ -1,1 +1,1 @@
-# RealWorld Client TS
+# RealWorld Client: React, Redux-toolkit, Redux-saga & Typescript

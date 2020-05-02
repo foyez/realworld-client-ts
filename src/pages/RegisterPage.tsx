@@ -2,25 +2,26 @@ import React, { useState, ChangeEvent, FormEvent } from 'react'
 import { Link, RouteComponentProps } from 'react-router-dom'
 
 import { useDispatch, useSelector } from 'react-redux'
-import { login } from 'slices/auth'
+import { register } from 'slices/auth'
 import { selectAuth } from 'selectors'
 
 import { ListErrors } from 'components/ListErrors'
 
-interface LoginPageProps extends RouteComponentProps {
+interface RegisterPageProps extends RouteComponentProps {
   // location: Location
 }
 
-export const LoginPage: React.FC<LoginPageProps> = ({ location }) => {
+export const RegisterPage: React.FC<RegisterPageProps> = ({ location }) => {
   const dispatch = useDispatch()
   const { errors } = useSelector(selectAuth)
 
   const [credentials, setCredentials] = useState({
+    username: '',
     email: '',
     password: '',
   })
-  const { email, password } = credentials
-  const isEnabled = email.length && password.length
+  const { username, email, password } = credentials
+  const isEnabled = username.length && email.length && password.length
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
@@ -31,7 +32,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ location }) => {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    dispatch(login(credentials))
+    dispatch(register(credentials))
   }
 
   return (
@@ -39,10 +40,10 @@ export const LoginPage: React.FC<LoginPageProps> = ({ location }) => {
       <div className="container page">
         <div className="row">
           <div className="col-md-6 offset-md-3 col-xs-12">
-            <h1 className="text-xs-center">Sign In</h1>
+            <h1 className="text-xs-center">Sign Up</h1>
             <p className="text-xs-center">
-              <Link to={{ pathname: '/register', state: location.state }}>
-                Need an account?
+              <Link to={{ pathname: '/login', state: location.state }}>
+                Have an account?
               </Link>
             </p>
 
@@ -50,6 +51,16 @@ export const LoginPage: React.FC<LoginPageProps> = ({ location }) => {
 
             <form onSubmit={handleSubmit}>
               <fieldset>
+                <fieldset className="form-group">
+                  <input
+                    type="text"
+                    className="form-control form-control-lg"
+                    placeholder="Username"
+                    name="username"
+                    value={username}
+                    onChange={handleChange}
+                  />
+                </fieldset>
                 <fieldset className="form-group">
                   <input
                     type="email"
@@ -72,7 +83,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ location }) => {
                   className="btn btn-lg btn-primary pull-xs-right"
                   disabled={!isEnabled}
                 >
-                  Sign in
+                  Sign up
                 </button>
               </fieldset>
             </form>
