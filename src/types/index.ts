@@ -1,3 +1,9 @@
+export interface LoginPayload {
+  email: string
+  password: string
+  [key: string]: string
+}
+
 export interface Author {
   username: string
   image: string
@@ -25,6 +31,8 @@ export interface CurrentUser {
   bio?: string
 }
 
+export type Errors = { [key: string]: string } | null
+
 //==============================================================================
 // State
 //==============================================================================
@@ -32,13 +40,13 @@ export interface CurrentUser {
 export interface ArticlesState {
   articles: Article[]
   articlesCount: number
-  error: string
   loading: boolean
+  errors: Errors
 }
 
 export interface AuthState {
   currentUser: CurrentUser | null
-  error: string
+  errors: Errors
 }
 
 export interface RootState {

@@ -1,13 +1,15 @@
 import { put, all, takeLatest } from 'redux-saga/effects'
+import { PayloadAction } from '@reduxjs/toolkit'
 
 import { ArticlesApi, AuthApi, setToken } from 'api'
+import { LoginPayload } from 'types'
 
 import {
   loadArticlesFailure,
   loadArticlesSuccess,
   loadArticles,
 } from 'slices/articles'
-import { authFailure, loadAuth, authSuccess, logout } from 'slices/auth'
+import { authFailure, loadAuth, authSuccess, logout, login } from 'slices/auth'
 
 /**
  * GET articles
@@ -18,8 +20,9 @@ function* fetchArticles() {
 
     yield put(loadArticlesSuccess(res.data.articles))
   } catch (err) {
-    console.log(err)
-    yield put(loadArticlesFailure(err.message))
+    console.log(err.message)
+    const { errors } = err.response.data
+    yield put(loadArticlesFailure(errors))
   }
 }
 
@@ -36,7 +39,24 @@ function* isUserAuth() {
 
     yield put(authSuccess(res.data))
   } catch (err) {
-    yield put(authFailure(err.message))
+    console.log(err.message)
+    const { errors } = err.response.data
+    yield put(authFailure(errors))
+  }
+}
+
+/**
+ * Login user
+ */
+function* loginUser({ payload }: PayloadAction<LoginPayload>) {
+  try {
+    const res = yield AuthApi.login(payload)
+
+    yield put(authSuccess(res.data))
+  } catch (err) {
+    console.log(err.message)
+    const { errors } = err.response.data
+    yield put(authFailure(errors))
   }
 }
 
@@ -44,5 +64,6 @@ export function* rootSaga() {
   yield all([
     takeLatest(loadArticles.type, fetchArticles),
     takeLatest(loadAuth.type, isUserAuth),
+    takeLatest(login.type, loginUser),
   ])
 }

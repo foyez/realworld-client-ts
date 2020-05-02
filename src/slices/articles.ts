@@ -1,10 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { ArticlesState, Article } from 'types'
+import { ArticlesState, Article, Errors } from 'types'
 
 const initialState: ArticlesState = {
   articles: [],
   articlesCount: 0,
-  error: '',
+  errors: null,
   loading: true,
 }
 
@@ -17,11 +17,12 @@ const articlesSlice = createSlice({
       ...state,
       articles: payload,
       loading: false,
+      errors: null,
     }),
-    loadArticlesFailure: (state, { payload }: PayloadAction<string>) => ({
+    loadArticlesFailure: (state, { payload }: PayloadAction<Errors>) => ({
       ...state,
       loading: false,
-      error: payload,
+      errors: payload,
     }),
   },
 })
