@@ -1,10 +1,10 @@
 import { combineReducers, Reducer } from 'redux'
 
-import { articlesReducer } from 'slices/articles'
+import { homeReducer } from 'slices/home'
 import { authReducer } from 'slices/auth'
 import { RootState } from 'types'
 
 export const rootReducer: Reducer<RootState> = combineReducers<RootState>({
-  articlesState: articlesReducer,
-  authState: authReducer,
+  home: homeReducer,
+  auth: authReducer,
 })

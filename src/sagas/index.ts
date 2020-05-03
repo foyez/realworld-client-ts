@@ -8,7 +8,7 @@ import {
   loadArticlesFailure,
   loadArticlesSuccess,
   loadArticles,
-} from 'slices/articles'
+} from 'slices/home'
 import {
   authFailure,
   loadAuth,
@@ -18,11 +18,6 @@ import {
   register,
   updateUser,
 } from 'slices/auth'
-// import {
-//   updateUser,
-//   updateUserSuccess,
-//   updateUserFailure,
-// } from 'slices/settings'
 
 /**
  * GET articles
@@ -45,7 +40,7 @@ function* fetchArticles() {
 function* isUserAuth() {
   try {
     const token = yield window.localStorage.getItem('jwt')
-    if (!token) return put(logout())
+    if (!token) return yield put(logout())
 
     yield setToken(token)
     const res = yield AuthApi.current()

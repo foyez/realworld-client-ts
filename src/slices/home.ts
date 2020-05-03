@@ -1,15 +1,15 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { ArticlesState, Article, Errors } from 'types'
+import { HomeState, Article, Errors } from 'types'
 
-const initialState: ArticlesState = {
+const initialState: HomeState = {
   articles: [],
   articlesCount: 0,
   errors: null,
   loading: true,
 }
 
-const articlesSlice = createSlice({
-  name: 'articles',
+const homeSlice = createSlice({
+  name: 'home',
   initialState,
   reducers: {
     loadArticles: () => initialState,
@@ -31,5 +31,5 @@ export const {
   loadArticles,
   loadArticlesSuccess,
   loadArticlesFailure,
-} = articlesSlice.actions
-export const articlesReducer = articlesSlice.reducer
+} = homeSlice.actions
+export const homeReducer = homeSlice.reducer

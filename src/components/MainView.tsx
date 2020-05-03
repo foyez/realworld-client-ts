@@ -2,13 +2,13 @@ import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 
 import { useDispatch, useSelector } from 'react-redux'
-import { selectArticles } from 'selectors'
-import { loadArticles } from 'slices/articles'
+import { selectHome } from 'selectors'
+import { loadArticles } from 'slices/home'
 
 import { ArticleList } from 'components/ArticleList'
 
 export const MainView: React.FC = () => {
-  const { articles } = useSelector(selectArticles)
+  const { articles } = useSelector(selectHome)
   const dispatch = useDispatch()
 
   useEffect(() => {

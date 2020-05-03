@@ -1,4 +1,4 @@
 import { RootState } from 'types'
 
-export const selectArticles = (state: RootState) => state.articlesState
-export const selectAuth = (state: RootState) => state.authState
+export const selectHome = (state: RootState) => state.home
+export const selectAuth = (state: RootState) => state.auth

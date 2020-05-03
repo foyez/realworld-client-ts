@@ -7,6 +7,7 @@ import { HomePage } from './pages/HomePage'
 import { LoginPage } from 'pages/LoginPage'
 import { RegisterPage } from 'pages/RegisterPage'
 import { SettingsPage } from 'pages/SettingsPage'
+import { ArticlePage } from 'pages/ArticlePage'
 
 const App: React.FC = () => (
   <Layout>
@@ -15,6 +16,7 @@ const App: React.FC = () => (
       <RestrictedRoute path="/login" component={LoginPage} />
       <RestrictedRoute path="/register" component={RegisterPage} />
       <PrivateRoute path="/settings" component={SettingsPage} />
+      <Route path="/article/:slug" component={ArticlePage} />
     </Switch>
   </Layout>
 )

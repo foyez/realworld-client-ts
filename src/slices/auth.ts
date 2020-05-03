@@ -63,6 +63,7 @@ const authSlice = createSlice({
     logout: (state) => ({
       ...state,
       currentUser: null,
+      loading: false,
       errors: null,
     }),
   },

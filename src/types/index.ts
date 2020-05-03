@@ -38,6 +38,10 @@ export interface Article {
   // [key: string]: string | number | boolean | Author | string[] | Date
 }
 
+export interface Comment {
+  body: string
+}
+
 export interface CurrentUser {
   username: string
   email: string
@@ -52,7 +56,7 @@ export type Errors = { [key: string]: string } | null
 // State
 //==============================================================================
 
-export interface ArticlesState {
+export interface HomeState {
   articles: Article[]
   articlesCount: number
   loading: boolean
@@ -66,6 +70,6 @@ export interface AuthState {
 }
 
 export interface RootState {
-  articlesState: ArticlesState
-  authState: AuthState
+  home: HomeState
+  auth: AuthState
 }

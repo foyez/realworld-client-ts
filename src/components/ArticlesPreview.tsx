@@ -14,12 +14,12 @@ export const ArticlePreview: React.FC<ArticlePreviewProps> = ({ article }) => {
   return (
     <div className="article-preview">
       <div className="article-meta">
-        <Link to="">
+        <Link to={`@${article.author.username}`}>
           <img src={image} alt="author profile pic" />
         </Link>
 
         <div className="info">
-          <Link to="" className="author">
+          <Link to={`@${article.author.username}`} className="author">
             {username}
           </Link>
           <span className="date">{date}</span>
