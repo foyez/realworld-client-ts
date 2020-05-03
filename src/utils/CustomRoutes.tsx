@@ -34,8 +34,6 @@ export const RestrictedRoute: React.FC<CustomRouteProps> = ({
 }) => {
   const { currentUser } = useSelector(selectAuth)
   const from = rest.location?.state?.from || '/'
-  console.log(from)
-  console.log(rest.location?.state?.from)
 
   const renderFn = (props: RouteProps) => {
     return currentUser ? <Redirect to={from} /> : <Component {...props} />

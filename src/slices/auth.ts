@@ -5,10 +5,12 @@ import {
   Errors,
   LoginPayload,
   RegisterPayload,
+  UserSettingsPayload,
 } from 'types'
 
 const initialState: AuthState = {
   currentUser: null,
+  loading: true,
   errors: null,
 }
 
@@ -18,7 +20,9 @@ const authSlice = createSlice({
   reducers: {
     loadAuth: () => initialState,
     login: {
-      reducer() {},
+      reducer() {
+        return initialState
+      },
       prepare(payload: LoginPayload) {
         return { payload }
       },
@@ -30,18 +34,30 @@ const authSlice = createSlice({
       // },
     },
     register: {
-      reducer() {},
+      reducer() {
+        return initialState
+      },
       prepare(payload: RegisterPayload) {
+        return { payload }
+      },
+    },
+    updateUser: {
+      reducer(state) {
+        state.loading = true
+      },
+      prepare(payload: UserSettingsPayload) {
         return { payload }
       },
     },
     authSuccess: (state, { payload }: PayloadAction<CurrentUser>) => ({
       ...state,
       currentUser: payload,
+      loading: false,
       errors: null,
     }),
     authFailure: (state, { payload }: PayloadAction<Errors>) => ({
       ...state,
+      loading: false,
       errors: payload,
     }),
     logout: (state) => ({
@@ -58,6 +74,7 @@ export const {
   authFailure,
   login,
   register,
+  updateUser,
   logout,
 } = authSlice.actions
 export const authReducer = authSlice.reducer

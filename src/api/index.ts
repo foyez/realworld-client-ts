@@ -1,5 +1,11 @@
 import Axios from 'axios'
-import { Article, CurrentUser, LoginPayload, RegisterPayload } from 'types'
+import {
+  Article,
+  CurrentUser,
+  LoginPayload,
+  RegisterPayload,
+  UserSettingsPayload,
+} from 'types'
 
 // const API_ROOT = process.env.REACT_APP_API_ROOT
 const API_ROOT = 'https://foyez-realworld-api.herokuapp.com/api'
@@ -37,4 +43,6 @@ export const AuthApi = {
     axios.post('/users/login', { user: { email, password } }),
   register: ({ username, email, password }: RegisterPayload) =>
     axios.post('/users', { user: { username, email, password } }),
+  updateUser: (user: UserSettingsPayload) =>
+    axios.put('/user', { user }, authHeader()),
 }

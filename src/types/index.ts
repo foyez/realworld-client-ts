@@ -11,6 +11,15 @@ export interface RegisterPayload {
   [key: string]: string
 }
 
+export interface UserSettingsPayload {
+  image: string
+  username: string
+  bio: string
+  email: string
+  password: string
+  [key: string]: string
+}
+
 export interface Author {
   username: string
   image: string
@@ -35,7 +44,7 @@ export interface CurrentUser {
   email: string
   token: string
   image: string
-  bio?: string
+  bio: string
 }
 
 export type Errors = { [key: string]: string } | null
@@ -53,6 +62,7 @@ export interface ArticlesState {
 
 export interface AuthState {
   currentUser: CurrentUser | null
+  loading: boolean
   errors: Errors
 }
 

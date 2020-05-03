@@ -1,21 +1,14 @@
 import { setToken } from 'api'
-
-interface User {
-  token: string
-}
-
-interface Payload {
-  user: User
-}
+import { CurrentUser } from 'types'
 
 interface Action {
   type: string
-  payload: Payload
+  payload: CurrentUser
 }
 
 const localStorageMiddleware = () => (next: Function) => (action: Action) => {
   if (action.type === 'auth/authSuccess') {
-    const { token } = action.payload.user
+    const { token } = action.payload
     window.localStorage.setItem('jwt', token)
     setToken(token)
   } else if (action.type === 'auth/logout') {

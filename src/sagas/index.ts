@@ -2,7 +2,7 @@ import { put, all, takeLatest } from 'redux-saga/effects'
 import { PayloadAction } from '@reduxjs/toolkit'
 
 import { ArticlesApi, AuthApi, setToken } from 'api'
-import { LoginPayload, RegisterPayload } from 'types'
+import { LoginPayload, RegisterPayload, UserSettingsPayload } from 'types'
 
 import {
   loadArticlesFailure,
@@ -16,7 +16,13 @@ import {
   logout,
   login,
   register,
+  updateUser,
 } from 'slices/auth'
+// import {
+//   updateUser,
+//   updateUserSuccess,
+//   updateUserFailure,
+// } from 'slices/settings'
 
 /**
  * GET articles
@@ -44,7 +50,7 @@ function* isUserAuth() {
     yield setToken(token)
     const res = yield AuthApi.current()
 
-    yield put(authSuccess(res.data))
+    yield put(authSuccess(res.data!.user))
   } catch (err) {
     console.log(err.message)
     const { errors } = err.response.data
@@ -59,7 +65,7 @@ function* loginUser({ payload }: PayloadAction<LoginPayload>) {
   try {
     const res = yield AuthApi.login(payload)
 
-    yield put(authSuccess(res.data))
+    yield put(authSuccess(res.data!.user))
   } catch (err) {
     console.log(err.message)
     const { errors } = err.response.data
@@ -68,13 +74,32 @@ function* loginUser({ payload }: PayloadAction<LoginPayload>) {
 }
 
 /**
- * Login user
+ * Register user
+ *
+ * @param {PayloadAction<UserSettingsPayload>} payload
  */
 function* registerUser({ payload }: PayloadAction<RegisterPayload>) {
   try {
     const res = yield AuthApi.register(payload)
 
-    yield put(authSuccess(res.data))
+    yield put(authSuccess(res.data!.data))
+  } catch (err) {
+    console.log(err.message)
+    const { errors } = err.response.data
+    yield put(authFailure(errors))
+  }
+}
+
+/**
+ * Update user settings
+ *
+ * @param {PayloadAction<UserSettingsPayload>} payload
+ */
+function* updateUserSettings({ payload }: PayloadAction<UserSettingsPayload>) {
+  try {
+    const res = yield AuthApi.updateUser(payload)
+
+    yield put(authSuccess(res.data!.user))
   } catch (err) {
     console.log(err.message)
     const { errors } = err.response.data
@@ -88,5 +113,6 @@ export function* rootSaga() {
     takeLatest(loadAuth.type, isUserAuth),
     takeLatest(login.type, loginUser),
     takeLatest(register.type, registerUser),
+    takeLatest(updateUser.type, updateUserSettings),
   ])
 }
