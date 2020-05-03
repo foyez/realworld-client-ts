@@ -82,7 +82,7 @@ function* registerUser({ payload }: PayloadAction<RegisterPayload>) {
   try {
     const res = yield AuthApi.register(payload)
 
-    yield put(authSuccess(res.data!.data))
+    yield put(authSuccess(res.data!.user))
   } catch (err) {
     console.log(err.message)
     const { errors } = err.response.data

@@ -13,9 +13,8 @@ export const SettingsForm = () => {
     username: '',
     bio: '',
     email: '',
-    password: '',
   })
-  const { image, username, bio, email, password } = settings
+  const { image, username, bio, email } = settings
 
   useEffect(() => {
     if (currentUser) {
@@ -83,15 +82,6 @@ export const SettingsForm = () => {
             placeholder="Email"
             value={email}
             onChange={handleChange('email')}
-          />
-        </fieldset>
-        <fieldset className="form-group">
-          <input
-            className="form-control form-control-lg"
-            type="password"
-            placeholder="New Password"
-            value={password}
-            onChange={handleChange('password')}
           />
         </fieldset>
 

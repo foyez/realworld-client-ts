@@ -15,34 +15,42 @@ const axios = Axios.create({
 })
 
 let token: string | null = null
-const authHeader = () => {
-  let options = {}
 
-  if (token) {
-    options = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  }
+// const authHeader = () => {
+//   let options = {}
 
-  return options
-}
+//   if (token) {
+//     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
+//     // options = {
+//     //   headers: {
+//     //     Authorization: `Bearer ${token}`,
+//     //   },
+//     // }
+//   }
+
+//   return options
+// }
 
 export const setToken = (_token: string | null) => {
   token = _token
+
+  if (token) {
+    console.log('SET TOKEN...........................')
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
+  }
 }
 
 export const ArticlesApi = {
   all: () => axios.get<Article[]>('/articles?limit=10'),
+  get: (slug: string) => axios.get(`/articles/${slug}`),
+  del: (slug: string) => axios.delete(`/articles/${slug}`),
 }
 
 export const AuthApi = {
-  current: () => axios.get<CurrentUser>('/user', authHeader()),
+  current: () => axios.get<CurrentUser>('/user'),
   login: ({ email, password }: LoginPayload) =>
     axios.post('/users/login', { user: { email, password } }),
   register: ({ username, email, password }: RegisterPayload) =>
     axios.post('/users', { user: { username, email, password } }),
-  updateUser: (user: UserSettingsPayload) =>
-    axios.put('/user', { user }, authHeader()),
+  updateUser: (user: UserSettingsPayload) => axios.put('/user', { user }),
 }

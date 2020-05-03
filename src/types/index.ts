@@ -16,7 +16,6 @@ export interface UserSettingsPayload {
   username: string
   bio: string
   email: string
-  password: string
   [key: string]: string
 }
 

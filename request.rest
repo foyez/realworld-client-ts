@@ -3,7 +3,20 @@ Content-Type: application/json
 
 {
   "user": {
-    "email": "test@email.com",
+    "email": "test2@email.com",
+    "password": "testpass"
+  }
+}
+
+###
+
+POST https://foyez-realworld-api.herokuapp.com/api/users
+Content-Type: application/json
+
+{
+  "user": {
+    "username": "test2",
+    "email": "test2@email.com",
     "password": "testpass"
   }
 }
