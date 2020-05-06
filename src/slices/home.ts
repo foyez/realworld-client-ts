@@ -12,7 +12,9 @@ const homeSlice = createSlice({
   name: 'home',
   initialState,
   reducers: {
-    loadArticles: () => initialState,
+    loadArticles: (state) => {
+      state.loading = true
+    },
     loadArticlesSuccess: (state, { payload }: PayloadAction<Article[]>) => ({
       ...state,
       articles: payload,

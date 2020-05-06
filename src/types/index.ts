@@ -1,3 +1,42 @@
+export interface Author {
+  username: string
+  image: string
+  following: boolean
+  [key: string]: string | boolean
+}
+
+export interface Article {
+  slug: string
+  title: string
+  description: string
+  tagList: string[]
+  favorited: boolean
+  favoritesCount: number
+  author: Author
+  createdAt: string
+  // [key: string]: string | number | boolean | Author | string[] | Date
+}
+
+export interface Comment {
+  id: string
+  body: string
+  author: Author
+  createdAt: string
+}
+
+export interface CurrentUser {
+  username: string
+  email: string
+  token: string
+  image: string
+  bio: string
+}
+
+export type Errors = { [key: string]: string } | null
+
+//==============================================================================
+// API
+//==============================================================================
 export interface LoginPayload {
   email: string
   password: string
@@ -19,38 +58,16 @@ export interface UserSettingsPayload {
   [key: string]: string
 }
 
-export interface Author {
-  username: string
-  image: string
-  following: boolean
-  [key: string]: string | boolean
+export interface ArticlePayload {
+  article: Article
+  comments: Comment[]
 }
 
-export interface Article {
+export interface CommentPayload {
   slug: string
-  title: string
-  description: string
-  tagList: string[]
-  favorited: boolean
-  favoritesCount: number
-  author: Author
-  createdAt: string
-  // [key: string]: string | number | boolean | Author | string[] | Date
+  body?: string
+  commentId?: string
 }
-
-export interface Comment {
-  body: string
-}
-
-export interface CurrentUser {
-  username: string
-  email: string
-  token: string
-  image: string
-  bio: string
-}
-
-export type Errors = { [key: string]: string } | null
 
 //==============================================================================
 // State
@@ -69,7 +86,15 @@ export interface AuthState {
   errors: Errors
 }
 
+export interface ArticleState {
+  article: Article
+  comments: Comment[]
+  loading: boolean
+  errors: Errors
+}
+
 export interface RootState {
   home: HomeState
   auth: AuthState
+  article: ArticleState
 }

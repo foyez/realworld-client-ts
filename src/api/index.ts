@@ -5,6 +5,7 @@ import {
   LoginPayload,
   RegisterPayload,
   UserSettingsPayload,
+  CommentPayload,
 } from 'types'
 
 // const API_ROOT = process.env.REACT_APP_API_ROOT
@@ -27,8 +28,8 @@ export const ArticlesApi = {
 }
 
 export const CommentsApi = {
-  create: (slug: string, comment: Comment) =>
-    axios.post(`/articles/${slug}/comments`, { comment }),
+  create: ({ slug, body }: CommentPayload) =>
+    axios.post(`/articles/${slug}/comments`, { comment: { body } }),
   delete: (slug: string, commentId: string) =>
     axios.delete(`/articles/${slug}/comments/${commentId}`),
   getComments: (slug: string) => axios.get(`/articles/${slug}/comments`),

@@ -1,8 +1,13 @@
 import { put, all, takeLatest } from 'redux-saga/effects'
 import { PayloadAction } from '@reduxjs/toolkit'
 
-import { ArticlesApi, AuthApi, setToken } from 'api'
-import { LoginPayload, RegisterPayload, UserSettingsPayload } from 'types'
+import { ArticlesApi, AuthApi, setToken, CommentsApi } from 'api'
+import {
+  LoginPayload,
+  RegisterPayload,
+  UserSettingsPayload,
+  CommentPayload,
+} from 'types'
 
 import {
   loadArticlesFailure,
@@ -18,6 +23,13 @@ import {
   register,
   updateUser,
 } from 'slices/auth'
+import {
+  loadArticle,
+  loadArticleSuccess,
+  addComment,
+  addCommentSuccess,
+  addCommentFailure,
+} from 'slices/article'
 
 /**
  * GET articles
@@ -27,6 +39,30 @@ function* fetchArticles() {
     const res = yield ArticlesApi.all()
 
     yield put(loadArticlesSuccess(res.data.articles))
+  } catch (err) {
+    console.log(err.message)
+    const { errors } = err.response.data
+    yield put(loadArticlesFailure(errors))
+  }
+}
+
+/**
+ * Get article
+ */
+function* fetchArticle({ payload }: PayloadAction<string>) {
+  try {
+    console.log(payload)
+    const res = yield Promise.all([
+      ArticlesApi.get(payload),
+      CommentsApi.getComments(payload),
+    ])
+    console.log(res[0].data, res[1].data)
+    const data = {
+      article: res[0].data!.article,
+      comments: res[1].data!.comments,
+    }
+
+    yield put(loadArticleSuccess(data))
   } catch (err) {
     console.log(err.message)
     const { errors } = err.response.data
@@ -102,12 +138,32 @@ function* updateUserSettings({ payload }: PayloadAction<UserSettingsPayload>) {
   }
 }
 
+/**
+ * Add comment to article
+ *
+ * @param {PayloadAction<UserSettingsPayload>} payload
+ */
+function* addCommentToArticle({ payload }: PayloadAction<CommentPayload>) {
+  try {
+    const res = yield CommentsApi.create(payload)
+    console.log(res.data)
+
+    yield put(addCommentSuccess(res.data?.comment))
+  } catch (err) {
+    console.log(err.message)
+    const { errors } = err.response.data
+    yield put(addCommentFailure(errors))
+  }
+}
+
 export function* rootSaga() {
   yield all([
-    takeLatest(loadArticles.type, fetchArticles),
     takeLatest(loadAuth.type, isUserAuth),
     takeLatest(login.type, loginUser),
     takeLatest(register.type, registerUser),
     takeLatest(updateUser.type, updateUserSettings),
+    takeLatest(loadArticles.type, fetchArticles),
+    takeLatest(loadArticle.type, fetchArticle),
+    takeLatest(addComment.type, addCommentToArticle),
   ])
 }

@@ -3,7 +3,7 @@ Content-Type: application/json
 
 {
   "user": {
-    "email": "test2@email.com",
+    "email": "test1@email.com",
     "password": "testpass"
   }
 }
@@ -15,8 +15,20 @@ Content-Type: application/json
 
 {
   "user": {
-    "username": "test2",
-    "email": "test2@email.com",
+    "username": "test1",
+    "email": "test1@email.com",
     "password": "testpass"
+  }
+}
+
+###
+
+POST https://foyez-realworld-api.herokuapp.com/api/articles/this-article-is-about-dream/comments
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlYWVlNDRiNjBmODgxMDAxN2UwODkxOCIsInVzZXJuYW1lIjoidGVzdDEiLCJleHAiOjE1OTM5MDE0NzYsImlhdCI6MTU4ODcxNzQ3Nn0.mU46N0lBgpzbCQ_wgFtLQquKtpdj8pAfIdS9zYQv6d8
+
+{
+  "comment": {
+    "body": "first comment"
   }
 }

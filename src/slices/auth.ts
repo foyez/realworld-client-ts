@@ -26,12 +26,6 @@ const authSlice = createSlice({
       prepare(payload: LoginPayload) {
         return { payload }
       },
-      // reducer(state, { payload }: PayloadAction<LoginPayload>) {
-      //   const { email, password } = payload
-      // },
-      // prepare(email, password) {
-      //   return { payload: { email, password } }
-      // },
     },
     register: {
       reducer() {
