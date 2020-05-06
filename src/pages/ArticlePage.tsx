@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
+import ReactMarkDown from 'react-markdown'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { loadArticle } from 'slices/article'
@@ -35,6 +36,7 @@ export const ArticlePage: React.FC<IArticlePageProps> = ({ match }) => {
       <div className="container page">
         <div className="row article-content">
           <div className="col-xs-12">
+            <ReactMarkDown source={article.description} />
             <ul className="tag-list">
               {article.tagList.map((tag) => {
                 return (
