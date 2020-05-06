@@ -26,9 +26,13 @@ import {
 import {
   loadArticle,
   loadArticleSuccess,
+  loadArticleFailure,
   addComment,
   addCommentSuccess,
   addCommentFailure,
+  deleteComment,
+  deleteCommentSuccess,
+  deleteCommentFailure,
 } from 'slices/article'
 
 /**
@@ -66,7 +70,7 @@ function* fetchArticle({ payload }: PayloadAction<string>) {
   } catch (err) {
     console.log(err.message)
     const { errors } = err.response.data
-    yield put(loadArticlesFailure(errors))
+    yield put(loadArticleFailure(errors))
   }
 }
 
@@ -146,13 +150,26 @@ function* updateUserSettings({ payload }: PayloadAction<UserSettingsPayload>) {
 function* addCommentToArticle({ payload }: PayloadAction<CommentPayload>) {
   try {
     const res = yield CommentsApi.create(payload)
-    console.log(res.data)
 
     yield put(addCommentSuccess(res.data?.comment))
   } catch (err) {
     console.log(err.message)
     const { errors } = err.response.data
     yield put(addCommentFailure(errors))
+  }
+}
+
+/**
+ * Delete Comment from article
+ */
+function* deleteCommentFromArticle({ payload }: PayloadAction<CommentPayload>) {
+  try {
+    yield CommentsApi.delete(payload)
+    yield put(deleteCommentSuccess(payload))
+  } catch (err) {
+    console.log(err.message)
+    const { errors } = err.response.data
+    yield put(deleteCommentFailure(errors))
   }
 }
 
@@ -165,5 +182,6 @@ export function* rootSaga() {
     takeLatest(loadArticles.type, fetchArticles),
     takeLatest(loadArticle.type, fetchArticle),
     takeLatest(addComment.type, addCommentToArticle),
+    takeLatest(deleteComment.type, deleteCommentFromArticle),
   ])
 }

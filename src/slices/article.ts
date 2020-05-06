@@ -72,6 +72,26 @@ const articleSlice = createSlice({
       errors: null,
     }),
     addCommentFailure: failed,
+    deleteComment: {
+      reducer(state) {
+        state.loading = true
+      },
+      prepare(payload: CommentPayload) {
+        return { payload }
+      },
+    },
+    deleteCommentSuccess: (
+      state,
+      { payload }: PayloadAction<CommentPayload>,
+    ) => ({
+      ...state,
+      comments: state.comments.filter(
+        (comment) => comment.id !== payload.commentId,
+      ),
+      loading: false,
+      errors: null,
+    }),
+    deleteCommentFailure: failed,
   },
 })
 
@@ -82,5 +102,8 @@ export const {
   addComment,
   addCommentSuccess,
   addCommentFailure,
+  deleteComment,
+  deleteCommentSuccess,
+  deleteCommentFailure,
 } = articleSlice.actions
 export const articleReducer = articleSlice.reducer

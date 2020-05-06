@@ -1,6 +1,10 @@
 import React from 'react'
 import { Comment as CommentType, CurrentUser } from 'types'
 import { Link } from 'react-router-dom'
+
+import { useDispatch } from 'react-redux'
+import { deleteComment } from 'slices/article'
+
 import { DeleteButton } from './DeleteButton'
 
 interface ICommentProps {
@@ -14,9 +18,13 @@ export const Comment: React.FC<ICommentProps> = ({
   slug,
   currentUser,
 }) => {
-  const show = currentUser?.username === comment.author.username
+  const dispatch = useDispatch()
 
-  const deleteComment = () => {}
+  const showDeleteBtn = currentUser?.username === comment.author.username
+
+  const handleDeleteComment = () => {
+    dispatch(deleteComment({ slug, commentId: comment.id }))
+  }
 
   return (
     <div className="card">
@@ -39,7 +47,7 @@ export const Comment: React.FC<ICommentProps> = ({
         <span className="date-posted">
           {new Date(comment.createdAt).toDateString()}
         </span>
-        {show && <DeleteButton onClick={deleteComment} />}
+        {showDeleteBtn && <DeleteButton onClick={handleDeleteComment} />}
       </div>
     </div>
   )

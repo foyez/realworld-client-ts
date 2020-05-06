@@ -30,7 +30,7 @@ export const ArticlesApi = {
 export const CommentsApi = {
   create: ({ slug, body }: CommentPayload) =>
     axios.post(`/articles/${slug}/comments`, { comment: { body } }),
-  delete: (slug: string, commentId: string) =>
+  delete: ({ slug, commentId }: CommentPayload) =>
     axios.delete(`/articles/${slug}/comments/${commentId}`),
   getComments: (slug: string) => axios.get(`/articles/${slug}/comments`),
 }
