@@ -1,6 +1,7 @@
 import React from 'react'
 import { Article } from 'types'
 import { Link } from 'react-router-dom'
+import { ArticleActions } from './ArticleActions'
 
 interface IArticleMetaProps {
   article: Article
@@ -25,6 +26,8 @@ export const ArticleMeta: React.FC<IArticleMetaProps> = ({
           {new Date(article.createdAt).toDateString()}
         </span>
       </div>
+
+      {canModify && <ArticleActions article={article} />}
     </div>
   )
 }
