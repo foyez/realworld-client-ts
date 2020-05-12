@@ -5,10 +5,14 @@ import { Article } from '../types'
 
 interface ArticleListProps {
   articles: Article[]
+  loading: boolean
 }
 
-export const ArticleList: React.FC<ArticleListProps> = ({ articles }) => {
-  if (!articles) {
+export const ArticleList: React.FC<ArticleListProps> = ({
+  articles,
+  loading,
+}) => {
+  if (loading) {
     return <div className="article-preview">Loading...</div>
   }
 

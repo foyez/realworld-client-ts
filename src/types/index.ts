@@ -9,6 +9,7 @@ export interface Article {
   slug: string
   title: string
   description: string
+  body: string
   tagList: string[]
   favorited: boolean
   favoritesCount: number
@@ -30,6 +31,13 @@ export interface CurrentUser {
   token: string
   image: string
   bio: string
+}
+
+export interface Profile {
+  username: string
+  bio: string
+  image: string
+  following: boolean
 }
 
 export type Errors = { [key: string]: string } | null
@@ -56,6 +64,11 @@ export interface UserSettingsPayload {
   bio: string
   email: string
   [key: string]: string
+}
+
+export interface ArticlesPayload {
+  authorUsername: string
+  page: number
 }
 
 export interface ArticlePayload {
@@ -93,8 +106,25 @@ export interface ArticleState {
   errors: Errors
 }
 
+export interface ProfileState {
+  profile: Profile | null
+  profileArticlesByAuthor: Article[]
+  profileArticlesByFavorites: Article[]
+  loading: boolean
+  errors: Errors
+}
+
+export interface ArticleListState {
+  articles: Article[]
+  articlesCount: number
+  loading: boolean
+  errors: Errors
+}
+
 export interface RootState {
   home: HomeState
   auth: AuthState
   article: ArticleState
+  profile: ProfileState
+  articleList: ArticleListState
 }

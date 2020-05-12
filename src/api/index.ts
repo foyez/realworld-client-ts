@@ -6,6 +6,7 @@ import {
   RegisterPayload,
   UserSettingsPayload,
   CommentPayload,
+  ArticlesPayload,
 } from 'types'
 
 // const API_ROOT = process.env.REACT_APP_API_ROOT
@@ -23,6 +24,14 @@ export const setToken = (_token: string | null) => {
 
 export const ArticlesApi = {
   all: () => axios.get<Article[]>('/articles?limit=10'),
+  byAuthor: ({ authorUsername, page }: ArticlesPayload) =>
+    axios.get<Article[]>(
+      `/articles?author=${encodeURIComponent(authorUsername)}&limit=5`,
+    ),
+  favoriteBy: ({ authorUsername, page }: ArticlesPayload) =>
+    axios.get<Article[]>(
+      `/articles?favorite=${encodeURIComponent(authorUsername)}&limit=5`,
+    ),
   get: (slug: string) => axios.get<Article>(`/articles/${slug}`),
   del: (slug: string) => axios.delete(`/articles/${slug}`),
 }
@@ -42,4 +51,10 @@ export const AuthApi = {
   register: ({ username, email, password }: RegisterPayload) =>
     axios.post('/users', { user: { username, email, password } }),
   updateUser: (user: UserSettingsPayload) => axios.put('/user', { user }),
+}
+
+export const ProfileApi = {
+  get: (username: string) => axios.get(`/profiles/${username}`),
+  follow: (username: string) => axios.post(`/profiles/${username}/follow`),
+  unfollow: (username: string) => axios.delete(`/profiles/${username}/follow`),
 }

@@ -13,6 +13,7 @@ const initialState: ArticleState = {
     title: '',
     tagList: [],
     description: '',
+    body: '',
     favorited: false,
     favoritesCount: 0,
     author: {
@@ -34,7 +35,7 @@ const failed = (state: ArticleState, { payload }: PayloadAction<Errors>) => ({
 })
 
 const articleSlice = createSlice({
-  name: 'home',
+  name: 'article',
   initialState,
   reducers: {
     loadArticle: {

@@ -1,12 +1,13 @@
 import { put, all, takeLatest } from 'redux-saga/effects'
 import { PayloadAction } from '@reduxjs/toolkit'
 
-import { ArticlesApi, AuthApi, setToken, CommentsApi } from 'api'
+import { ArticlesApi, AuthApi, setToken, CommentsApi, ProfileApi } from 'api'
 import {
   LoginPayload,
   RegisterPayload,
   UserSettingsPayload,
   CommentPayload,
+  ArticlesPayload,
 } from 'types'
 
 import {
@@ -34,6 +35,18 @@ import {
   deleteCommentSuccess,
   deleteCommentFailure,
 } from 'slices/article'
+import {
+  loadProfile,
+  follow,
+  unfollow,
+  loadProfileSuccess,
+  loadProfileFailure,
+} from 'slices/profile'
+import {
+  loadArticleListByAuthor,
+  loadArticleListSuccess,
+  loadArticleListFailure,
+} from 'slices/articleList'
 
 /**
  * GET articles
@@ -173,6 +186,70 @@ function* deleteCommentFromArticle({ payload }: PayloadAction<CommentPayload>) {
   }
 }
 
+/**
+ * Fetch a profile
+ */
+function* fetchProfile({ payload }: PayloadAction<string>) {
+  try {
+    const res = yield ProfileApi.get(payload)
+
+    yield put(loadProfileSuccess(res.data!.profile))
+  } catch (err) {
+    console.log(err.message)
+    const { errors } = err.response.data
+    yield put(loadProfileFailure(errors))
+  }
+}
+
+/**
+ * Follow a profile
+ */
+function* followProfile({ payload }: PayloadAction<string>) {
+  try {
+    const res = yield ProfileApi.follow(payload)
+
+    yield put(loadProfileSuccess(res.data!.profile))
+  } catch (err) {
+    console.log(err.message)
+    const { errors } = err.response.data
+    yield put(loadProfileFailure(errors))
+  }
+}
+
+/**
+ * Unfollow a profile
+ */
+function* unfollowProfile({ payload }: PayloadAction<string>) {
+  try {
+    const res = yield ProfileApi.unfollow(payload)
+
+    yield put(loadProfileSuccess(res.data!.profile))
+  } catch (err) {
+    console.log(err.message)
+    const { errors } = err.response.data
+    yield put(loadProfileFailure(errors))
+  }
+}
+
+/**
+ * Fetch articles
+ */
+function* fetchArticleList({ type, payload }: PayloadAction<ArticlesPayload>) {
+  try {
+    let res
+
+    if ('articleList/loadArticleListByAuthor') {
+      res = yield ArticlesApi.byAuthor(payload)
+    }
+
+    yield put(loadArticleListSuccess(res.data))
+  } catch (err) {
+    console.log(err.message)
+    const { errors } = err.response.data
+    yield put(loadArticleListFailure(errors))
+  }
+}
+
 export function* rootSaga() {
   yield all([
     takeLatest(loadAuth.type, isUserAuth),
@@ -183,5 +260,9 @@ export function* rootSaga() {
     takeLatest(loadArticle.type, fetchArticle),
     takeLatest(addComment.type, addCommentToArticle),
     takeLatest(deleteComment.type, deleteCommentFromArticle),
+    takeLatest(loadProfile.type, fetchProfile),
+    takeLatest(follow.type, followProfile),
+    takeLatest(unfollow.type, unfollowProfile),
+    takeLatest(loadArticleListByAuthor.type, fetchArticleList),
   ])
 }

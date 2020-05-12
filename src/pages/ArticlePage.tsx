@@ -36,7 +36,7 @@ export const ArticlePage: React.FC<IArticlePageProps> = ({ match }) => {
       <div className="container page">
         <div className="row article-content">
           <div className="col-xs-12">
-            <ReactMarkDown source={article.description} />
+            <ReactMarkDown source={article.body} />
             <ul className="tag-list">
               {article.tagList.map((tag) => {
                 return (

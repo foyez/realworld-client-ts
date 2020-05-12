@@ -8,7 +8,7 @@ import { loadArticles } from 'slices/home'
 import { ArticleList } from 'components/ArticleList'
 
 export const MainView: React.FC = () => {
-  const { articles } = useSelector(selectHome)
+  const { articles, loading } = useSelector(selectHome)
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -27,7 +27,7 @@ export const MainView: React.FC = () => {
         </ul>
       </div>
 
-      <ArticleList articles={articles} />
+      <ArticleList articles={articles} loading={loading} />
     </div>
   )
 }
